@@ -50,6 +50,23 @@ class PieceType(Enum):
     def upgrade(self):
         return PieceType((self.value + 1) % 6)
 
+    def to_string(self):
+        match self.value:
+            case 0:
+                return "frog"
+            case 1:
+                return "penguin"
+            case 2:
+                return "axolotl"
+            case 3:
+                return "cat"
+            case 4:
+                return "goat"
+            case 5:
+                return "capybara"
+            case _:
+                raise KeyError("WRONG TYPE DURING CONVERSION OF PIECE TYPE -> STRING")
+
 
 class Piece:
     image: pygame.Surface
@@ -58,12 +75,13 @@ class Piece:
     place_time: int
     piece_type: PieceType
 
-    def __init__(self, name: str, x: int, y: int):
+    def __init__(self, piece_type: PieceType, x: int, y: int):
         self.place_time = pygame.time.get_ticks()
-        self.image = _piece_sprites_dict[name]
+        self.image = _piece_sprites_dict[piece_type.to_string()]
         self.x = x
         self.y = y
-        self.piece_type = PieceType.from_string(name)
+        self.piece_type = piece_type
 
     def to_screen_pos(self):
         return _to_screen_pos(self.x, self.y)
+
