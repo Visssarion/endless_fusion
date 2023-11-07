@@ -3,26 +3,20 @@ from sys import exit
 import scripts.pieces as pieces
 import scripts.board as board
 import scripts.config_manager as config_manager
-from pygame._sdl2 import Window, WINDOWPOS_CENTERED
+import scripts.fullscreen_manager as fullscreen_manager
 
 pygame.init()
 
-screen_x, screen_y = pygame.display.set_mode().get_size()
-
 config_manager.load()
-
-window = Window.from_display_module()
 
 if config_manager.config["screen"]["fullscreen"]:
     if config_manager.config["screen"]["exclusive"]:
-        final_screen = pygame.display.set_mode((screen_x, screen_y), pygame.FULLSCREEN)
+        final_screen = fullscreen_manager.exclusive_fullscreen()
     else:
-        final_screen = pygame.display.set_mode((screen_x, screen_y), pygame.NOFRAME)
-        window.position = WINDOWPOS_CENTERED
+        final_screen = fullscreen_manager.maximized_window()
 else:
-    screen_scale = (config_manager.config["screen"]["scale"], config_manager.config["screen"]["scale"])
-    final_screen = pygame.display.set_mode((160 * screen_scale[0], 90 * screen_scale[1]), 0)
-    window.position = WINDOWPOS_CENTERED
+    final_screen = fullscreen_manager.windowed()
+
 
 screen = pygame.Surface((160, 90))
 pygame.display.set_caption("Endless Fusion")
