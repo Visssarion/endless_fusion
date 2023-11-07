@@ -2,8 +2,11 @@ import pygame
 from sys import exit
 import scripts.pieces as pieces
 import scripts.board as board
+import scripts.config_manager as config_manager
 
 pygame.init()
+
+config_manager.load()
 
 screen_scale = (4, 4)
 final_screen = pygame.display.set_mode((160 * screen_scale[0], 90 * screen_scale[1]))
