@@ -4,8 +4,8 @@ from pygame._sdl2 import Window, WINDOWPOS_CENTERED
 
 pygame.display.init()
 
-screen_x = pygame.display.Info().current_h
-screen_y = pygame.display.Info().current_w
+screen_x = pygame.display.Info().current_w
+screen_y = pygame.display.Info().current_h
 
 
 def exclusive_fullscreen():
@@ -25,3 +25,5 @@ def windowed():
     window = Window.from_display_module()
     window.position = WINDOWPOS_CENTERED
     return final_screen
+
+# TODO: fullscreen scaling with side-borders?
