@@ -1,7 +1,9 @@
 from collections import deque
 import random
 
-from scripts.pieces import PieceType
+import pygame.transform
+
+from scripts.pieces import PieceType, _piece_sprites_dict
 
 
 class PiecesQueue:
@@ -32,7 +34,6 @@ class PiecesQueue:
     def __init__(self):
         self.fill_starting_queue()
         self.fill_random_queue()
-        print(self.look_at(5))
 
     def pop(self):
         if self.starting_queue:
@@ -46,7 +47,12 @@ class PiecesQueue:
         combined_queue = self.starting_queue + self.random_queue
         return combined_queue[index]
 
-
+    def render(self, screen: pygame.Surface, pos: tuple[int, int], scale: float, space: int, amount: int):
+        for i in range(amount):
+            piece_type = self.look_at(i)
+            piece_image = _piece_sprites_dict[piece_type.to_string()]
+            final_image = pygame.transform.scale_by(piece_image, scale)
+            screen.blit(final_image, (pos[0]+(final_image.get_size()[0]+space)*i, pos[1]))
 
 
 """
