@@ -1,13 +1,16 @@
 from scripts.pieces import Piece, PieceType
 import pygame
 from scripts.board_combining_util import PieceCombined
+from scripts.score import ScoreManager
 
 
 class Board:
     pieces: list
+    score: ScoreManager
 
-    def __init__(self):
+    def __init__(self, score: ScoreManager):
         self.pieces = list()
+        self.score = score
 
     def append_piece(self, piece: Piece):
         self.pieces.append(piece)
@@ -38,7 +41,7 @@ class Board:
         best_combo: PieceCombined = max(calculated_list)
 
         if best_combo.calculate_score() > 0:
-            print(best_combo.calculate_score())
+            self.score.score += best_combo.calculate_score()
             indexes: list = [best_combo.my_index] + best_combo.vertical_neighbors + best_combo.horizontal_neighbors
             indexes.sort(reverse=True)
             new_piece = Piece(self.pieces[indexes[0]].piece_type.upgrade(), self.pieces[indexes[0]].x,
