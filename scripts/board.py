@@ -52,7 +52,8 @@ class Board:
             self.update()
             return
         else:
-            return
+            if len(self.pieces) >= 25:
+                self.game_over()
 
     def __vertical_neighbors_of_a_piece(self, piece_type: PieceType, x: int, y: int) -> list:
         result = list()
@@ -81,3 +82,6 @@ class Board:
         except ValueError:
             pass
         return result
+
+    def game_over(self):
+        print("GAME OVER")
