@@ -85,3 +85,5 @@ class Piece:
     def to_screen_pos(self):
         return _to_screen_pos(self.x, self.y)
 
+    def __eq__(self, other):
+        return self.piece_type == other.piece_type and self.x == other.x and self.y == other.y
