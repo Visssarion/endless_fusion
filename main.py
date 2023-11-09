@@ -6,6 +6,8 @@ import scripts.config_manager as config_manager
 import scripts.fullscreen_manager as fullscreen_manager
 import scripts.mouse as mouse_util
 import scripts.pieces_queue as pieces_queue
+from scripts.label import Label
+from scripts.score import ScoreManager
 
 print("Loading the game...\nPlease wait. :)")
 pygame.init()
@@ -30,7 +32,10 @@ background = pygame.image.load("sprites/playing board.png")
 game_icon = pygame.image.load('sprites/icon.png')
 pygame.display.set_icon(game_icon)
 
-game_board = board.Board()
+font = pygame.font.Font('fonts/smallest_pixel-7.ttf', 10)
+score_manager = ScoreManager(Label(font, pygame.Color("White"), (155, 2), "topright"))
+
+game_board = board.Board(score_manager)
 
 p_queue = pieces_queue.PiecesQueue()
 
@@ -49,6 +54,8 @@ while True:
     screen.blit(background, (0, 0))
 
     game_board.render(screen)
+
+    score_manager.render(screen)
 
     p_queue.render(screen, (90, 3), 0.5, 1, 3)
 
