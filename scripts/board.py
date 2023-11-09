@@ -53,35 +53,45 @@ class Board:
             except ValueError:
                 right = -1
 
-            #print([i, left, right, upper, lower])
+            # print([i, left, right, upper, lower])
+
+            indexes = [i]
 
             if right != -1 and left != -1:
-                indexes = [i, left, right]
-                indexes.sort(reverse=True)
-
-                new_piece = Piece(self.pieces[indexes[0]].piece_type.upgrade(), self.pieces[indexes[0]].x, self.pieces[indexes[0]].y)
-
-                for index in indexes:
-                    self.pieces.pop(index)
-
-                self.append_piece(new_piece)
-                return
-
+                indexes += [left, right]
+                try:
+                    indexes.append(self.pieces.index(Piece(current.piece_type, current.x - 2, current.y)))
+                except ValueError:
+                    pass
+                try:
+                    indexes.append(self.pieces.index(Piece(current.piece_type, current.x + 2, current.y)))
+                except ValueError:
+                    pass
             elif upper != -1 and lower != -1:
-                indexes = [i, upper, lower]
-                indexes.sort(reverse=True)
+                indexes += [upper, lower]
+                try:
+                    indexes.append(self.pieces.index(Piece(current.piece_type, current.x, current.y - 2)))
+                except ValueError:
+                    pass
+                try:
+                    indexes.append(self.pieces.index(Piece(current.piece_type, current.x, current.y + 2)))
+                except ValueError:
+                    pass
 
-                new_piece = Piece(self.pieces[indexes[0]].piece_type.upgrade(), self.pieces[indexes[0]].x, self.pieces[indexes[0]].y)
+            print (indexes)
 
-                for index in indexes:
-                    self.pieces.pop(index)
-
-                self.append_piece(new_piece)
+            if len(indexes) <= 1:
                 return
 
-            """
-        try:
-            print(self.pieces.index(Piece(PieceType.FROG, 1, 1)))
-        except ValueError:
-            print(False)
-            """
+            indexes.sort(reverse=True)
+
+            new_piece = Piece(self.pieces[indexes[0]].piece_type.upgrade(), self.pieces[indexes[0]].x,
+                              self.pieces[indexes[0]].y)
+
+            for index in indexes:
+                self.pieces.pop(index)
+
+            self.append_piece(new_piece)
+            return
+
+
