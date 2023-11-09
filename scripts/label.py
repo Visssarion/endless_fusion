@@ -2,20 +2,20 @@ import pygame
 
 
 class Label:
-
     antialias = False
-    anchor = "topright"
+    anchor: str
     font: pygame.font.Font
-    image : pygame.Surface
+    image: pygame.Surface
     text: str
     color: pygame.Color
     position: tuple[int, int]
     rect: pygame.Rect
 
-    def __init__(self, font, color, position):
+    def __init__(self, font: pygame.font.Font, color: pygame.Color, position: tuple[int, int], anchor: str = "topleft"):
         self.font = font
         self.color = color
         self.position = position
+        self.anchor = anchor
         self.update("")
 
     def update(self, text):
@@ -25,4 +25,3 @@ class Label:
 
     def render(self, surface):
         surface.blit(self.image, self.rect)
-
