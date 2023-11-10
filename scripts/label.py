@@ -17,6 +17,7 @@ class Label:
         self.position = position
         self.anchor = anchor
         self.update("")
+        self.rect: pygame.rect
 
     def update(self, text):
         self.image = self.font.render(text, self.antialias, self.color)
