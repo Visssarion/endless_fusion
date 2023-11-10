@@ -65,7 +65,7 @@ while True:
 
     score_manager.render(screen)
 
-    p_queue.render(screen, (90, 3), 0.5, 1, 3)
+    p_queue.render(screen, (90, 3), 3)
 
     final_screen.blit(pygame.transform.scale(screen, final_screen.get_size()), (0, 0))
     pygame.display.update()

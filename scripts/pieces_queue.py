@@ -47,12 +47,17 @@ class PiecesQueue:
         combined_queue = self.starting_queue + self.random_queue
         return combined_queue[index]
 
-    def render(self, screen: pygame.Surface, pos: tuple[int, int], scale: float, space: int, amount: int):
-        for i in range(amount):
-            piece_type = self.look_at(i)
+    def render(self, screen: pygame.Surface, pos: tuple[int, int], amount=1):
+        piece_type = self.look_at(0)
+        piece_image: pygame.Surface = _piece_sprites_dict[piece_type.to_string()]
+        screen.blit(piece_image, pos)
+        pos = (pos[0]+piece_image.get_size()[0], pos[1])
+        for i in range(amount-1):
+            piece_type = self.look_at(i+1)
             piece_image = _piece_sprites_dict[piece_type.to_string()]
-            final_image = pygame.transform.scale_by(piece_image, scale)
-            screen.blit(final_image, (pos[0]+(final_image.get_size()[0]+space)*i, pos[1]))
+            final_image = pygame.transform.scale_by(piece_image, 0.6)
+            screen.blit(final_image, (pos[0]+(final_image.get_size()[0]+0.6)*i, pos[1]))
+            # alternative/previous size = 0.5. current - 0.6
 
 
 """
