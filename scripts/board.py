@@ -17,7 +17,7 @@ class Board:
 
     def append_piece(self, piece: Piece):
         self.pieces.append(piece)
-        particle_pos = (piece.to_screen_pos()[0]+8, piece.to_screen_pos()[1]+8)
+        particle_pos = (piece.to_screen_pos()[0] + 8, piece.to_screen_pos()[1] + 8)
         self.particle_handler.spawn_appearance_particles(piece.piece_type, particle_pos)
         self.update()
 
@@ -54,7 +54,10 @@ class Board:
             for index in indexes:
                 deleted_piece: Piece = self.pieces.pop(index)
                 particle_pos = (deleted_piece.to_screen_pos()[0] + 8, deleted_piece.to_screen_pos()[1] + 8)
-                self.particle_handler.spawn_appearance_particles(deleted_piece.piece_type, particle_pos)
+                new_pos = (new_piece.to_screen_pos()[0] + 8, new_piece.to_screen_pos()[1] + 8)
+                # self.particle_handler.spawn_appearance_particles(deleted_piece.piece_type, particle_pos)
+                self.particle_handler.spawn_combining_particle(deleted_piece.piece_type,
+                                                               particle_pos, new_pos)
 
             self.append_piece(new_piece)
             self.update()

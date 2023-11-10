@@ -1,8 +1,9 @@
+import math
 import random
 
-from scripts.pieces import PieceType
+from scripts.pieces import PieceType, _piece_sprites_dict
 import pygame
-from math import cos, sin, radians
+from math import cos, sin, radians, degrees, hypot, atan2
 
 _particle_sprites_dict = {
     "frog": pygame.image.load("sprites/particles/particle_frog.png"),
@@ -73,6 +74,23 @@ class ParticleHandler():
     def spawn_appearance_particles(self, piece_type: PieceType, pos: tuple[float, float]):
         for i in range(4):
             self.particle_list.append(Particle(
-                _particle_sprites_dict[piece_type.to_string()], pos, random.random()*90.0 + i * 90.0,
-                1+random.random()*0.3, 30, -20, True
+                _particle_sprites_dict[piece_type.to_string()], pos, random.random() * 90.0 + i * 90.0,
+                                                                     1 + random.random() * 0.3, 30, -20, True
             ))
+
+    def spawn_combining_particle(self, piece_type: PieceType,
+                                 pos_from: tuple[float, float], pos_to: tuple[float, float]):
+        delta_x = (pos_to[0] - pos_from[0])
+        delta_y = (pos_to[1] - pos_from[1])
+        direction = degrees(atan2(delta_y, delta_x))
+        delta_len = hypot(delta_x, delta_y)
+
+        time = 0.5
+        velocity = delta_len / time / 3 * 2
+        # len = v * t + (a * t ^ 2) / 2
+        # a = v / t
+        # len = v * t + v * t / 2 = v * t * (3 / 2)
+        # v = len / t / 3 * 2
+        self.particle_list.append(Particle(
+            _piece_sprites_dict[piece_type.to_string()], pos_from, direction, time, velocity, velocity/time, True
+        ))
