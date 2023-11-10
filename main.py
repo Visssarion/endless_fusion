@@ -30,11 +30,12 @@ clock = pygame.time.Clock()
 FPS = 60
 
 background = pygame.image.load("sprites/playing board.png")
+order = pygame.image.load("sprites/order.png")
 game_icon = pygame.image.load('sprites/icon.png')
 pygame.display.set_icon(game_icon)
 
 font = pygame.font.Font('fonts/smallest_pixel-7.ttf', 10)
-score_manager = ScoreManager(Label(font, pygame.Color("White"), (155, 2), "topright"))
+score_manager = ScoreManager(Label(font, pygame.Color("0xbf3fb3"), (155, 2), "topright"))
 particle_handler = ParticleHandler()
 
 game_board = board.Board(score_manager, particle_handler)
@@ -58,7 +59,7 @@ while True:
                     game_board.append_piece(pieces.Piece(spawned_piece_type, grid_pos[0], grid_pos[1]))
 
     screen.blit(background, (0, 0))
-
+    screen.blit(order, (100, 31))
     particle_handler.update_and_render(delta_time, screen)
 
     game_board.render(screen)
