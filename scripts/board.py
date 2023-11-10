@@ -78,6 +78,8 @@ class Board:
             result.append(self.pieces.index(Piece(piece_type, x, y - 2)))
         except ValueError:
             pass
+        if len(result) <= 1:
+            return list()
         return result
 
     def __horizontal_neighbors_of_a_piece(self, piece_type: PieceType, x: int, y: int) -> list:
@@ -92,6 +94,8 @@ class Board:
             result.append(self.pieces.index(Piece(piece_type, x - 2, y)))
         except ValueError:
             pass
+        if len(result) <= 1:
+            return list()
         return result
 
     def game_over(self):
