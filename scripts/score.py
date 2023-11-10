@@ -29,4 +29,5 @@ class ScoreManager:
         self.label.render(surface)
 
     def particle(self, delta_score):
-        self.particle_handler.score_particle(delta_score)
+        if delta_score > 0:
+            self.particle_handler.score_particle(delta_score)
