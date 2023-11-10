@@ -59,8 +59,25 @@ class Particle:
     def is_alive(self):
         return self.lifetime_left > 0
 
+    @staticmethod
+    def from_and_to(image: pygame.Surface, pos_from: tuple[float, float], pos_to: tuple[float, float],
+                    lifetime: float = 1, shrink: bool = True):
+        delta_x = (pos_to[0] - pos_from[0])
+        delta_y = (pos_to[1] - pos_from[1])
+        direction = degrees(atan2(delta_y, delta_x))
+        delta_len = hypot(delta_x, delta_y)
+        velocity = delta_len / lifetime / 3 * 2
+        # len = v * t + (a * t ^ 2) / 2
+        # a = v / t
+        # len = v * t + v * t / 2 = v * t * (3 / 2)
+        # v = len / t / 3 * 2
+        return Particle(
+            image, pos_from, direction,
+            lifetime, velocity, velocity / lifetime, True
+        )
 
-class ParticleHandler():
+
+class ParticleHandler:
     particle_list: list[Particle]
 
     def __init__(self):
@@ -75,22 +92,11 @@ class ParticleHandler():
         for i in range(4):
             self.particle_list.append(Particle(
                 _particle_sprites_dict[piece_type.to_string()], pos, random.random() * 90.0 + i * 90.0,
-                                                                     1 + random.random() * 0.3, 30, -20, True
+                1 + random.random() * 0.3, 30, -20, True
             ))
 
     def spawn_combining_particle(self, piece_type: PieceType,
                                  pos_from: tuple[float, float], pos_to: tuple[float, float]):
-        delta_x = (pos_to[0] - pos_from[0])
-        delta_y = (pos_to[1] - pos_from[1])
-        direction = degrees(atan2(delta_y, delta_x))
-        delta_len = hypot(delta_x, delta_y)
-
-        time = 0.5
-        velocity = delta_len / time / 3 * 2
-        # len = v * t + (a * t ^ 2) / 2
-        # a = v / t
-        # len = v * t + v * t / 2 = v * t * (3 / 2)
-        # v = len / t / 3 * 2
-        self.particle_list.append(Particle(
-            _piece_sprites_dict[piece_type.to_string()], pos_from, direction, time, velocity, velocity/time, True
+        self.particle_list.append(Particle.from_and_to(
+            _piece_sprites_dict[piece_type.to_string()], pos_from, pos_to, 0.5, True
         ))
