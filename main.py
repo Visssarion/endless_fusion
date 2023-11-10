@@ -8,6 +8,7 @@ import scripts.mouse as mouse_util
 import scripts.pieces_queue as pieces_queue
 from scripts.label import Label
 from scripts.score import ScoreManager
+from scripts.vfx import ParticleHandler
 
 print("Loading the game...\nPlease wait. :)")
 pygame.init()
@@ -34,10 +35,14 @@ pygame.display.set_icon(game_icon)
 
 font = pygame.font.Font('fonts/smallest_pixel-7.ttf', 10)
 score_manager = ScoreManager(Label(font, pygame.Color("White"), (155, 2), "topright"))
+particle_handler = ParticleHandler()
 
-game_board = board.Board(score_manager)
+game_board = board.Board(score_manager, particle_handler)
 
 p_queue = pieces_queue.PiecesQueue()
+
+
+delta_time = 0
 
 while True:
     for event in pygame.event.get():
@@ -49,9 +54,12 @@ while True:
             grid_pos = mouse_util.game_to_board_pos(pos, (16, 16), (5, 5))
             if mouse_util.check_if_in_bound(grid_pos, (4, 4)):
                 if not game_board.piece_exists_at_pos(grid_pos):
-                    game_board.append_piece(pieces.Piece(p_queue.pop(), grid_pos[0], grid_pos[1]))
+                    spawned_piece_type = p_queue.pop()
+                    game_board.append_piece(pieces.Piece(spawned_piece_type, grid_pos[0], grid_pos[1]))
 
     screen.blit(background, (0, 0))
+
+    particle_handler.update_and_render(delta_time, screen)
 
     game_board.render(screen)
 
@@ -61,4 +69,5 @@ while True:
 
     final_screen.blit(pygame.transform.scale(screen, final_screen.get_size()), (0, 0))
     pygame.display.update()
-    clock.tick(FPS)
+
+    delta_time = clock.tick(FPS) / 1000

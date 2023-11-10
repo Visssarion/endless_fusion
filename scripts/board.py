@@ -2,18 +2,23 @@ from scripts.pieces import Piece, PieceType
 import pygame
 from scripts.board_combining_util import PieceCombined
 from scripts.score import ScoreManager
+from scripts.vfx import ParticleHandler
 
 
 class Board:
     pieces: list
     score: ScoreManager
+    particle_handler: ParticleHandler
 
-    def __init__(self, score: ScoreManager):
+    def __init__(self, score: ScoreManager, particle_handler: ParticleHandler):
         self.pieces = list()
         self.score = score
+        self.particle_handler = particle_handler
 
     def append_piece(self, piece: Piece):
         self.pieces.append(piece)
+        particle_pos = (piece.to_screen_pos()[0]+8, piece.to_screen_pos()[1]+8)
+        self.particle_handler.spawn_appearance_particles(piece.piece_type, particle_pos)
         self.update()
 
     def render(self, display: pygame.Surface):
@@ -47,7 +52,10 @@ class Board:
             new_piece = Piece(self.pieces[indexes[0]].piece_type.upgrade(), self.pieces[indexes[0]].x,
                               self.pieces[indexes[0]].y)
             for index in indexes:
-                self.pieces.pop(index)
+                deleted_piece: Piece = self.pieces.pop(index)
+                particle_pos = (deleted_piece.to_screen_pos()[0] + 8, deleted_piece.to_screen_pos()[1] + 8)
+                self.particle_handler.spawn_appearance_particles(deleted_piece.piece_type, particle_pos)
+
             self.append_piece(new_piece)
             self.update()
             return
