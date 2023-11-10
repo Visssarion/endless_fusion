@@ -1,6 +1,7 @@
 import math
 import random
 
+from scripts.label import Label
 from scripts.pieces import PieceType, _piece_sprites_dict
 import pygame
 from math import cos, sin, radians, degrees, hypot, atan2
@@ -73,15 +74,17 @@ class Particle:
         # v = len / t / 3 * 2
         return Particle(
             image, pos_from, direction,
-            lifetime, velocity, velocity / lifetime, True
+            lifetime, velocity, velocity / lifetime, shrink
         )
 
 
 class ParticleHandler:
     particle_list: list[Particle]
+    font: pygame.font
 
-    def __init__(self):
+    def __init__(self, font: pygame.font):
         self.particle_list = list()
+        self.font = font
 
     def update_and_render(self, delta_time: float, surface: pygame.Surface):
         for particle in self.particle_list:
@@ -100,3 +103,12 @@ class ParticleHandler:
         self.particle_list.append(Particle.from_and_to(
             _piece_sprites_dict[piece_type.to_string()], pos_from, pos_to, 0.5, True
         ))
+
+    def score_particle(self, score: int):
+        label = Label(self.font, pygame.Color("0xbf3fb3"), (0, 0), "topright")
+        label.update("+"+str(score))
+        self.particle_list.append(Particle.from_and_to(
+            label.image, (150, 12), (150, 2), 1.3, True
+        ))
+
+
