@@ -7,6 +7,7 @@ import scripts.fullscreen_manager as fullscreen_manager
 import scripts.mouse as mouse_util
 import scripts.pieces_queue as pieces_queue
 from scripts.label import Label
+from scripts.meter import MeterWithBubbles
 from scripts.score import ScoreManager
 from scripts.vfx import ParticleHandler
 
@@ -45,6 +46,10 @@ p_queue = pieces_queue.PiecesQueue()
 
 delta_time = 0
 
+meter = MeterWithBubbles(pygame.mask.from_surface(pygame.image.load("sprites/meter/mask.png")),
+                         pygame.image.load("sprites/meter/fluid.png"),
+                         pygame.image.load("sprites/meter/bubble.png"), 5)
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -58,7 +63,11 @@ while True:
                     spawned_piece_type = p_queue.pop()
                     game_board.append_piece(pieces.Piece(spawned_piece_type, grid_pos[0], grid_pos[1]))
 
+    screen.fill("Black")
     screen.blit(background, (0, 0))
+
+    meter.update((score_manager.score % 50)/50)
+    meter.render(screen, (94, 25))
     screen.blit(order, (100, 31))
     score_manager.render(screen)
     particle_handler.update_and_render(delta_time, screen)
