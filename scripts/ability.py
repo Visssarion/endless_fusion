@@ -13,7 +13,7 @@ class Ability:
         return self.energy / self.required_energy
 
     def can_be_activated(self):
-        return self.energy > self.required_energy
+        return self.energy >= self.required_energy
 
     def reset(self):
         self.energy = 0
