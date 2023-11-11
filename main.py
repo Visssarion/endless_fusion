@@ -34,6 +34,8 @@ FPS = 60
 
 background = pygame.image.load("sprites/playing board.png")
 order = pygame.image.load("sprites/order.png")
+order_activated = pygame.image.load("sprites/order activated.png")
+
 game_icon = pygame.image.load('sprites/icon.png')
 pygame.display.set_icon(game_icon)
 
@@ -42,7 +44,7 @@ ParticleHandler().font = font
 ScoreManager().label = Label(font, pygame.Color("0xbf3fb3"), (155, 2), "topright")
 ScoreManager().score = 0
 
-ability = Ability(50)
+ability = Ability(5)
 
 game_board = board.Board(ability)
 
@@ -68,6 +70,7 @@ while True:
                 if 31 < pos[1] < 91:
                     if ability.can_be_activated():
                         ability.reset()
+                        game_board.upgrade_all()
                         print("ABILITY USED!!!!")
 
     screen.fill("Black")
@@ -75,7 +78,10 @@ while True:
 
     meter.update(ability.get_coefficient())
     meter.render(screen, (94, 25))
-    screen.blit(order, (100, 31))
+    if not ability.can_be_activated():
+        screen.blit(order, (100, 31))
+    else:
+        screen.blit(order_activated, (100, 31))
     ScoreManager().render(screen)
     ParticleHandler().update_and_render(screen)
     game_board.render(screen)
