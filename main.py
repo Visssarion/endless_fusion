@@ -7,6 +7,7 @@ import scripts.fullscreen_manager as fullscreen_manager
 import scripts.mouse as mouse_util
 import scripts.pieces_queue as pieces_queue
 from scripts.ability import Ability
+from scripts.game_over import GameOverManager
 from scripts.label import Label
 from scripts.meter import MeterWithBubbles
 from scripts.score import ScoreManager
@@ -44,7 +45,7 @@ ParticleHandler().font = font
 ScoreManager().label = Label(font, pygame.Color("0xbf3fb3"), (155, 2), "topright")
 ScoreManager().score = 0
 
-ability = Ability(5)
+ability = Ability(20)
 
 game_board = board.Board(ability)
 
@@ -53,6 +54,8 @@ p_queue = pieces_queue.PiecesQueue()
 meter = MeterWithBubbles(pygame.mask.from_surface(pygame.image.load("sprites/meter/mask.png")),
                          pygame.image.load("sprites/meter/fluid.png"),
                          pygame.image.load("sprites/meter/bubble.png"), 5)
+
+game_over_manager = GameOverManager()
 
 while True:
     for event in pygame.event.get():
@@ -87,6 +90,7 @@ while True:
     game_board.render(screen)
 
     p_queue.render(screen, (90, 3), 3)
+    game_over_manager.render(screen)
 
     final_screen.blit(pygame.transform.scale(screen, final_screen.get_size()), (0, 0))
     pygame.display.update()

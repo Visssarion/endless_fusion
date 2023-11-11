@@ -1,4 +1,5 @@
 from scripts.ability import Ability
+from scripts.game_over import GameOverManager
 from scripts.pieces import Piece, PieceType
 import pygame
 from scripts.board_combining_util import PieceCombined
@@ -104,7 +105,8 @@ class Board:
         return result
 
     def game_over(self):
-        print("GAME OVER")
+        print("Game Over")
+        GameOverManager().is_game_over = True
 
     def upgrade_all(self):
         print("Here")
@@ -112,3 +114,5 @@ class Board:
             new_piece = Piece(self.pieces[i].piece_type.upgrade(),
                               self.pieces[i].x, self.pieces[i].y)
             self.pieces[i] = new_piece
+            x, y = new_piece.to_screen_pos()
+            self.particle_handler.spawn_appearance_particles(new_piece.piece_type, (x+8, y+8))
