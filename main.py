@@ -11,6 +11,7 @@ from scripts.label import Label
 from scripts.meter import MeterWithBubbles
 from scripts.score import ScoreManager
 from scripts.vfx import ParticleHandler
+from scripts.singleton import Time
 
 print("Loading the game...\nPlease wait. :)")
 pygame.init()
@@ -45,8 +46,6 @@ ability = Ability(50)
 game_board = board.Board(score_manager, particle_handler, ability)
 
 p_queue = pieces_queue.PiecesQueue()
-
-delta_time = 0
 
 meter = MeterWithBubbles(pygame.mask.from_surface(pygame.image.load("sprites/meter/mask.png")),
                          pygame.image.load("sprites/meter/fluid.png"),
@@ -85,4 +84,4 @@ while True:
     final_screen.blit(pygame.transform.scale(screen, final_screen.get_size()), (0, 0))
     pygame.display.update()
 
-    delta_time = clock.tick(FPS) / 1000
+    Time().delta_time = clock.tick(FPS) / 1000

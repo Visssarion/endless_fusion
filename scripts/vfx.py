@@ -1,10 +1,10 @@
-import math
 import random
 
 from scripts.label import Label
 from scripts.pieces import PieceType, _piece_sprites_dict
 import pygame
 from math import cos, sin, radians, degrees, hypot, atan2
+from scripts.singleton import Time
 
 _particle_sprites_dict = {
     "frog": pygame.image.load("sprites/particles/particle_frog.png"),
@@ -86,9 +86,9 @@ class ParticleHandler:
         self.particle_list = list()
         self.font = font
 
-    def update_and_render(self, delta_time: float, surface: pygame.Surface):
+    def update_and_render(self, surface: pygame.Surface):
         for particle in self.particle_list:
-            particle.update_and_render(delta_time, surface)
+            particle.update_and_render(Time().delta_time, surface)
         self.particle_list = [x for x in self.particle_list if x.is_alive()]
 
     def spawn_appearance_particles(self, piece_type: PieceType, pos: tuple[float, float]):
