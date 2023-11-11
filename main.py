@@ -6,6 +6,7 @@ import scripts.config_manager as config_manager
 import scripts.fullscreen_manager as fullscreen_manager
 import scripts.mouse as mouse_util
 import scripts.pieces_queue as pieces_queue
+from scripts.ability import Ability
 from scripts.label import Label
 from scripts.meter import MeterWithBubbles
 from scripts.score import ScoreManager
@@ -39,8 +40,9 @@ font = pygame.font.Font('fonts/smallest_pixel-7.ttf', 10)
 particle_handler = ParticleHandler(font)
 score_manager = ScoreManager(Label(font, pygame.Color("0xbf3fb3"), (155, 2), "topright"),
                              particle_handler)
+ability = Ability(50)
 
-game_board = board.Board(score_manager, particle_handler)
+game_board = board.Board(score_manager, particle_handler, ability)
 
 p_queue = pieces_queue.PiecesQueue()
 
@@ -62,15 +64,20 @@ while True:
                 if not game_board.piece_exists_at_pos(grid_pos):
                     spawned_piece_type = p_queue.pop()
                     game_board.append_piece(pieces.Piece(spawned_piece_type, grid_pos[0], grid_pos[1]))
+            if 100 < pos[0] < 160:
+                if 31 < pos[1] < 91:
+                    if ability.can_be_activated():
+                        ability.reset()
+                        print("ABILITY USED!!!!")
 
     screen.fill("Black")
     screen.blit(background, (0, 0))
 
-    meter.update((score_manager.score % 50)/50)
+    meter.update(ability.get_coefficient())
     meter.render(screen, (94, 25))
     screen.blit(order, (100, 31))
     score_manager.render(screen)
-    particle_handler.update_and_render(delta_time, screen)
+    particle_handler.update_and_render(screen)
     game_board.render(screen)
 
     p_queue.render(screen, (90, 3), 3)
