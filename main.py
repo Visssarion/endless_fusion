@@ -39,10 +39,12 @@ pygame.display.set_icon(game_icon)
 
 font = pygame.font.Font('fonts/smallest_pixel-7.ttf', 10)
 ParticleHandler().font = font
-score_manager = ScoreManager(Label(font, pygame.Color("0xbf3fb3"), (155, 2), "topright"))
+ScoreManager().label = Label(font, pygame.Color("0xbf3fb3"), (155, 2), "topright")
+ScoreManager().score = 0
+
 ability = Ability(50)
 
-game_board = board.Board(score_manager, ability)
+game_board = board.Board(ability)
 
 p_queue = pieces_queue.PiecesQueue()
 
@@ -74,7 +76,7 @@ while True:
     meter.update(ability.get_coefficient())
     meter.render(screen, (94, 25))
     screen.blit(order, (100, 31))
-    score_manager.render(screen)
+    ScoreManager().render(screen)
     ParticleHandler().update_and_render(screen)
     game_board.render(screen)
 

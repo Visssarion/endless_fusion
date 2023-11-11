@@ -1,16 +1,13 @@
 import pygame
 
 from scripts.label import Label
+from scripts.singleton import Singleton
 from scripts.vfx import ParticleHandler
 
 
-class ScoreManager:
+class ScoreManager(metaclass=Singleton):
     label: Label
     _score: int = 0
-
-    def __init__(self, label: Label):
-        self.label = label
-        self.score = 0
 
     # plain attributes
     @property

@@ -12,9 +12,9 @@ class Board:
     particle_handler: ParticleHandler = ParticleHandler()
     ability: Ability
 
-    def __init__(self, score: ScoreManager, ability: Ability):
+    def __init__(self, ability: Ability):
         self.pieces = list()
-        self.score = score
+        self.score = ScoreManager()
         self.ability = ability
 
     def append_piece(self, piece: Piece):
