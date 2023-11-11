@@ -6,12 +6,10 @@ from scripts.vfx import ParticleHandler
 
 class ScoreManager:
     label: Label
-    particle_handler: ParticleHandler
     _score: int = 0
 
-    def __init__(self, label: Label, particle_handler: ParticleHandler):
+    def __init__(self, label: Label):
         self.label = label
-        self.particle_handler = particle_handler
         self.score = 0
 
     # plain attributes
@@ -30,4 +28,4 @@ class ScoreManager:
 
     def particle(self, delta_score):
         if delta_score > 0:
-            self.particle_handler.score_particle(delta_score)
+            ParticleHandler().score_particle(delta_score)

@@ -9,13 +9,12 @@ from scripts.vfx import ParticleHandler
 class Board:
     pieces: list
     score: ScoreManager
-    particle_handler: ParticleHandler
+    particle_handler: ParticleHandler = ParticleHandler()
     ability: Ability
 
-    def __init__(self, score: ScoreManager, particle_handler: ParticleHandler, ability: Ability):
+    def __init__(self, score: ScoreManager, ability: Ability):
         self.pieces = list()
         self.score = score
-        self.particle_handler = particle_handler
         self.ability = ability
 
     def append_piece(self, piece: Piece):

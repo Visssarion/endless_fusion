@@ -38,12 +38,11 @@ game_icon = pygame.image.load('sprites/icon.png')
 pygame.display.set_icon(game_icon)
 
 font = pygame.font.Font('fonts/smallest_pixel-7.ttf', 10)
-particle_handler = ParticleHandler(font)
-score_manager = ScoreManager(Label(font, pygame.Color("0xbf3fb3"), (155, 2), "topright"),
-                             particle_handler)
+ParticleHandler().font = font
+score_manager = ScoreManager(Label(font, pygame.Color("0xbf3fb3"), (155, 2), "topright"))
 ability = Ability(50)
 
-game_board = board.Board(score_manager, particle_handler, ability)
+game_board = board.Board(score_manager, ability)
 
 p_queue = pieces_queue.PiecesQueue()
 
@@ -76,7 +75,7 @@ while True:
     meter.render(screen, (94, 25))
     screen.blit(order, (100, 31))
     score_manager.render(screen)
-    particle_handler.update_and_render(screen)
+    ParticleHandler().update_and_render(screen)
     game_board.render(screen)
 
     p_queue.render(screen, (90, 3), 3)
@@ -84,4 +83,4 @@ while True:
     final_screen.blit(pygame.transform.scale(screen, final_screen.get_size()), (0, 0))
     pygame.display.update()
 
-    Time().delta_time = clock.tick(FPS) / 1000
+    Time.delta_time = clock.tick(FPS) / 1000

@@ -79,16 +79,21 @@ class Particle:
 
 
 class ParticleHandler:
-    particle_list: list[Particle]
+    particle_list: list[Particle] = list()
     font: pygame.font
+    __instance = None
 
-    def __init__(self, font: pygame.font):
-        self.particle_list = list()
-        self.font = font
+    def __new__(cls, *args, **kwargs):
+        if cls.__instance is None:
+            cls.__instance = super().__new__(cls)
+        return cls.__instance
+
+    def __del__(self):
+        ParticleHandler.__instance = None
 
     def update_and_render(self, surface: pygame.Surface):
         for particle in self.particle_list:
-            particle.update_and_render(Time().delta_time, surface)
+            particle.update_and_render(Time.delta_time, surface)
         self.particle_list = [x for x in self.particle_list if x.is_alive()]
 
     def spawn_appearance_particles(self, piece_type: PieceType, pos: tuple[float, float]):
