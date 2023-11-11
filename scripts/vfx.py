@@ -4,7 +4,7 @@ from scripts.label import Label
 from scripts.pieces import PieceType, _piece_sprites_dict
 import pygame
 from math import cos, sin, radians, degrees, hypot, atan2
-from scripts.singleton import Time
+from scripts.time import Time
 
 _particle_sprites_dict = {
     "frog": pygame.image.load("sprites/particles/particle_frog.png"),

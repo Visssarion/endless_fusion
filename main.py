@@ -11,7 +11,7 @@ from scripts.label import Label
 from scripts.meter import MeterWithBubbles
 from scripts.score import ScoreManager
 from scripts.vfx import ParticleHandler
-from scripts.singleton import Time
+from scripts.time import Time
 
 print("Loading the game...\nPlease wait. :)")
 pygame.init()
