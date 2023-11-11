@@ -7,7 +7,7 @@ from scripts.vfx import ParticleHandler
 
 
 class Board:
-    pieces: list
+    pieces: list[Piece]
     score: ScoreManager
     particle_handler: ParticleHandler = ParticleHandler()
     ability: Ability
@@ -105,3 +105,10 @@ class Board:
 
     def game_over(self):
         print("GAME OVER")
+
+    def upgrade_all(self):
+        print("Here")
+        for i in range(len(self.pieces)):
+            new_piece = Piece(self.pieces[i].piece_type.upgrade(),
+                              self.pieces[i].x, self.pieces[i].y)
+            self.pieces[i] = new_piece
