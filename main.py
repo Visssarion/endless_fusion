@@ -1,3 +1,4 @@
+import asyncio
 import pygame
 from sys import exit
 import scripts.pieces as pieces
@@ -71,46 +72,51 @@ def restart():
     p_queue = pieces_queue.PiecesQueue()
 
 
+async def main():
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.MOUSEBUTTONUP:
+                if not game_over_manager.is_game_over:
+                    pos = mouse_util.screen_to_game_pos(pygame.mouse.get_pos(), final_screen.get_size(),
+                                                        screen.get_size())
+                    grid_pos = mouse_util.game_to_board_pos(pos, (16, 16), (5, 5))
+                    if mouse_util.check_if_in_bound(grid_pos, (4, 4)):
+                        if not game_board.piece_exists_at_pos(grid_pos):
+                            spawned_piece_type = p_queue.pop()
+                            game_board.append_piece(pieces.Piece(spawned_piece_type, grid_pos[0], grid_pos[1]))
+                    if 100 < pos[0] < 160:
+                        if 31 < pos[1] < 91:
+                            if ability.can_be_activated():
+                                ability.reset()
+                                game_board.upgrade_all()
+                                print("ABILITY USED!!!!")
+                elif game_over_manager.animation_complete():
+                    restart()
 
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            exit()
-        if event.type == pygame.MOUSEBUTTONUP:
-            if not game_over_manager.is_game_over:
-                pos = mouse_util.screen_to_game_pos(pygame.mouse.get_pos(), final_screen.get_size(), screen.get_size())
-                grid_pos = mouse_util.game_to_board_pos(pos, (16, 16), (5, 5))
-                if mouse_util.check_if_in_bound(grid_pos, (4, 4)):
-                    if not game_board.piece_exists_at_pos(grid_pos):
-                        spawned_piece_type = p_queue.pop()
-                        game_board.append_piece(pieces.Piece(spawned_piece_type, grid_pos[0], grid_pos[1]))
-                if 100 < pos[0] < 160:
-                    if 31 < pos[1] < 91:
-                        if ability.can_be_activated():
-                            ability.reset()
-                            game_board.upgrade_all()
-                            print("ABILITY USED!!!!")
-            elif game_over_manager.animation_complete():
-                restart()
+        screen.fill("Black")
+        screen.blit(background, (0, 0))
 
-    screen.fill("Black")
-    screen.blit(background, (0, 0))
+        meter.update(ability.get_coefficient())
+        meter.render(screen, (94, 25))
+        if not ability.can_be_activated():
+            screen.blit(order, (100, 31))
+        else:
+            screen.blit(order_activated, (100, 31))
+        ScoreManager().render(screen)
+        ParticleHandler().update_and_render(screen)
+        game_board.render(screen)
 
-    meter.update(ability.get_coefficient())
-    meter.render(screen, (94, 25))
-    if not ability.can_be_activated():
-        screen.blit(order, (100, 31))
-    else:
-        screen.blit(order_activated, (100, 31))
-    ScoreManager().render(screen)
-    ParticleHandler().update_and_render(screen)
-    game_board.render(screen)
+        p_queue.render(screen, (90, 3), 3)
+        game_over_manager.render(screen)
 
-    p_queue.render(screen, (90, 3), 3)
-    game_over_manager.render(screen)
+        final_screen.blit(pygame.transform.scale(screen, final_screen.get_size()), (0, 0))
+        pygame.display.update()
 
-    final_screen.blit(pygame.transform.scale(screen, final_screen.get_size()), (0, 0))
-    pygame.display.update()
+        Time.delta_time = clock.tick(FPS) / 1000
+        await asyncio.sleep(0)
 
-    Time.delta_time = clock.tick(FPS) / 1000
+
+asyncio.run(main())
