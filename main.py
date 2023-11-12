@@ -62,6 +62,7 @@ game_over_manager = GameOverManager()
 def restart():
     print("Restart")
     ScoreManager().score = 0
+    global ability
     ability.energy = 0
     global game_board
     del game_board.pieces
@@ -73,6 +74,17 @@ def restart():
 
 
 async def main():
+    global background
+    global order
+    global order_activated
+    global screen
+    global clock
+    global final_screen
+    global ability
+    global game_board
+    global p_queue
+    global meter
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
