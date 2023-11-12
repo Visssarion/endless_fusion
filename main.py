@@ -1,5 +1,6 @@
 import asyncio
 import pygame
+from sys import exit
 import scripts.pieces as pieces
 import scripts.board as board
 import scripts.config_manager as config_manager
@@ -86,6 +87,9 @@ async def main():
 
     while True:
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
             if event.type == pygame.MOUSEBUTTONUP:
                 if not game_over_manager.is_game_over:
                     pos = mouse_util.screen_to_game_pos(pygame.mouse.get_pos(), final_screen.get_size(),
