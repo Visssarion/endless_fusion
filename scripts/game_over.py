@@ -28,3 +28,8 @@ class GameOverManager(metaclass=Singleton):
 
             self.coefficient += delta_time / self.time
             self.coefficient = max(min(self.coefficient, 1), 0)
+        else:
+            self.coefficient = 0
+
+    def animation_complete(self):
+        return self.coefficient >= 1.0
