@@ -1,8 +1,9 @@
 import pygame
-from pygame.math import lerp
-
 from scripts.singleton import Singleton
 from scripts.time import Time
+
+def lerp(a, b, weight):
+    return a + (b-a) * weight
 
 
 class GameOverManager(metaclass=Singleton):
