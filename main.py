@@ -19,7 +19,7 @@ pygame.init()
 
 config_manager.load()
 
-final_screen = pygame.display.set_mode((160 * 6, 90 * 6), 0)
+final_screen = pygame.display.set_mode((1920, 1080), 0)
 
 screen = pygame.Surface((160, 90))
 pygame.display.set_caption("Endless Fusion")
@@ -117,6 +117,7 @@ async def main():
         p_queue.render(screen, (90, 3), 3)
         game_over_manager.render(screen)
 
+        final_screen.fill(pygame.Color("0x262420"))
         final_screen.blit(pygame.transform.scale(screen, final_screen.get_size()), (0, 0))
         pygame.display.update()
 
