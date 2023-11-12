@@ -4,7 +4,6 @@ from sys import exit
 import scripts.pieces as pieces
 import scripts.board as board
 import scripts.config_manager as config_manager
-import scripts.fullscreen_manager as fullscreen_manager
 import scripts.mouse as mouse_util
 import scripts.pieces_queue as pieces_queue
 from scripts.ability import Ability
@@ -20,13 +19,7 @@ pygame.init()
 
 config_manager.load()
 
-if config_manager.config["screen"]["fullscreen"]:
-    if config_manager.config["screen"]["exclusive"]:
-        final_screen = fullscreen_manager.exclusive_fullscreen()
-    else:
-        final_screen = fullscreen_manager.maximized_window()
-else:
-    final_screen = fullscreen_manager.windowed()
+final_screen = pygame.display.set_mode((160 * 6, 90 * 6), 0)
 
 screen = pygame.Surface((160, 90))
 pygame.display.set_caption("Endless Fusion")
